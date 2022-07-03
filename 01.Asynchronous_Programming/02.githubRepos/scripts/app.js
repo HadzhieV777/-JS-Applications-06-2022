@@ -25,6 +25,7 @@ async function loadRepos() {
 
       li.appendChild(a);
       reposUl.appendChild(li);
+      usernameInput.value = '';
     }
   } catch (error) {
     reposUl.innerHTML = `${error.message}`;
