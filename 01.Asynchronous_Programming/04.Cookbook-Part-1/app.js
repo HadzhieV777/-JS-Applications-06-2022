@@ -55,7 +55,23 @@ function createNewArticle(recipe, section) {
 }
 
 async function showDetails(event) {
-    console.log(event.target.id)   
-    // TODO find a way to hande the return of <empty string>
-    // caused by clicking on article's inner elements 
+  let currentId;
+  let currentArticle;
+
+  if (event.target.id === "") {
+    let parentDiv = event.target.parentElement;
+    let article = parentDiv.parentElement;
+    currentId = article.id;
+    currentArticle = article;
+  } else {
+    currentId = event.target.id;
+    currentArticle = event.target;
+  }
+
+  const url = await fetch(
+    `http://localhost:3030/jsonstore/cookbook/details/${currentId}`
+  );
+  const response = await url.json();
+console.log(response)
+  
 }
