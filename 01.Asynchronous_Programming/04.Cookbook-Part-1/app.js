@@ -72,6 +72,38 @@ async function showDetails(event) {
     `http://localhost:3030/jsonstore/cookbook/details/${currentId}`
   );
   const response = await url.json();
-console.log(response)
-  
+  createRecipeToggle(response, currentArticle);
 }
+
+function createRecipeToggle(recipe, article) {
+  article.innerHTML = "";
+  article.className = "";
+  article.appendChild(createElement("h2", "", recipe.name));
+
+  let band = createElement("div", "band");
+
+  // Img section
+  let thumb = createElement("div", "thumb");
+  thumb.appendChild(createElement("img", "", "", recipe.img));
+  band.appendChild(thumb);
+
+  // Ingredients section
+  let ing = createElement("div", "ingredients");
+  ing.appendChild(createElement("h3", "", "Ingredients:"));
+  let ul = createElement("ul");
+
+  recipe.ingredients.forEach((i) => ul.appendChild(createElement("li", "", i)));
+  ing.appendChild(ul);
+  band.appendChild(ing);
+  article.appendChild(band);
+
+  // Description section
+  let description = createElement("div", "description");
+  description.appendChild(createElement("h3", "", "Preparation:"));
+
+  recipe.steps.forEach((s) =>
+    description.appendChild(createElement("p", "", s))
+  );
+  article.appendChild(description);
+}
+
