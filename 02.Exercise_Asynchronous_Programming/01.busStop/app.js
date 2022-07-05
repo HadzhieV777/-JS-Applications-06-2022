@@ -19,8 +19,11 @@ async function getInfo() {
       let li = document.createElement("li");
       li.textContent = `Bus ${b[0]} arrives in ${b[1]} minutes`;
       bussesUl.appendChild(li);
+
+      inputField.value = "";
     });
   } catch (error) {
     stopNameDiv.innerHTML = `<h4 style="color:red;">${error.message}</h4>`;
+    inputField.value = "";
   }
 }
