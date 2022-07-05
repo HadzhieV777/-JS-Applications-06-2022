@@ -43,7 +43,7 @@ function createSection(entry, sec) {
 
   div.appendChild(head);
 
-  // Add hiden section
+  // Add hidden section
   const extra = createNewElement("div", "extra");
   extra.style.display = "none";
 
