@@ -10,6 +10,13 @@
     <script defer src="./src/login.js"></script>
 </head>
 
+<style>
+    .emsg {
+      color: #c12020;
+      font-weight: bold;
+    }
+  </style>
+
 <body>
     <header>
         <h1>My Cookbook</h1>
@@ -26,6 +33,7 @@
                 <label>E-mail: <input type="text" name="email"></label>
                 <label>Password: <input type="password" name="password"></label>
                 <input type="submit" value="Login">
+                <div class="emsg"></div>
             </form>
         </article>
     </main>
