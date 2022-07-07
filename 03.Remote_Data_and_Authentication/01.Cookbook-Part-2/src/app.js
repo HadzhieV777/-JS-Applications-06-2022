@@ -62,6 +62,7 @@ function createRecipeCard(recipe) {
   return result;
 }
 
+
 window.addEventListener("load", async () => {
   checkForUser();
   const main = document.querySelector("main");
