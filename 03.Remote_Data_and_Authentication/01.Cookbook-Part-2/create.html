@@ -7,8 +7,15 @@
     <link rel="stylesheet" href="static/site.css">
     <link rel="stylesheet" href="static/recipe.css">
     <link rel="stylesheet" href="static/form.css">
-    <script src="./src/create.js"></script>
+    <script defer src="./src/create.js"></script>
 </head>
+
+<style>
+    .emsg {
+      color: #c12020;
+      font-weight: bold;
+    }
+  </style>
 
 <body>
     <header>
@@ -27,6 +34,7 @@
                 <label class="ml">Ingredients: <textarea name="ingredients" placeholder="Enter ingredients on separate lines"></textarea></label>
                 <label class="ml">Preparation: <textarea name="steps" placeholder="Enter preparation steps on separate lines"></textarea></label>
                 <input type="submit" value="Create Recipe">
+                <div class="emsg"></div>
             </form>
         </article>
     </main>
