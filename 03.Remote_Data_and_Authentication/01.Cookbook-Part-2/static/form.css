@@ -42,3 +42,10 @@ input[type="submit"]:hover {
     color: white;
     cursor: pointer;
 }
+
+.emsg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 15px;
+}
