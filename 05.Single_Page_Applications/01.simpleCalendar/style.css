@@ -1,6 +1,11 @@
 body {
-    font-family: Tahoma;
+    height: 125vh;
+    margin-top: 80px;
+    padding: 30px;
+    background-size: cover;
+    font-family: sans-serif;
 }
+
 
 /* declare a 7 column grid on the table */
 
@@ -12,7 +17,8 @@ body {
     margin-right: auto;
 }
 
-.daysCalendar table tr, .daysCalendar table tbody {
+.daysCalendar table tr,
+.daysCalendar table tbody {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -27,7 +33,8 @@ body {
     margin-right: auto;
 }
 
-.monthCalendar table tr, .monthCalendar table tbody {
+.monthCalendar table tr,
+.monthCalendar table tbody {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -42,7 +49,8 @@ body {
     margin-right: auto;
 }
 
-.yearsCalendar table tr, .yearsCalendar table tbody {
+.yearsCalendar table tr,
+.yearsCalendar table tbody {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -58,12 +66,12 @@ caption {
 }
 
 .calendar a {
-    color: #8e352e;
+    color: #4caf50;
     text-decoration: none;
 }
 
 .calendar .months {
-    background: #8e352e;
+    background: #4caf50;
 }
 
 .calendar td {
@@ -73,7 +81,7 @@ caption {
 }
 
 .calendar .weekdays {
-    background: #8e352e;
+    background: #4caf50;
 }
 
 .month {
@@ -105,8 +113,8 @@ caption {
     margin-left: auto;
     margin-right: auto;
     padding: 4px;
-    background: #333;
-    color: #fff;
+    background: #b4efdf59;
+    color: rgb(0, 0, 0);
     width: 35px;
     border-radius: 50%;
     flex: 0 0 auto;
@@ -123,7 +131,8 @@ caption {
     cursor: pointer;
 }
 
-.monthCalendar caption:hover, .daysCalendar caption:hover {
+.monthCalendar caption:hover,
+.daysCalendar caption:hover {
     background-color: #666;
     cursor: pointer;
     color: white;
@@ -134,9 +143,12 @@ caption {
      ============================*/
 
 @media (max-width: 768px) {
-    .calendar .weekdays, .calendar .other-month {
+
+    .calendar .weekdays,
+    .calendar .other-month {
         display: none;
     }
+
     .calendar li {
         height: auto !important;
         border: 1px solid #ededed;
@@ -144,12 +156,17 @@ caption {
         padding: 10px;
         margin-bottom: -1px;
     }
-    .calendar, .calendar tr, .calendar tbody {
+
+    .calendar,
+    .calendar tr,
+    .calendar tbody {
         grid-template-columns: 1fr;
     }
+
     .calendar tr {
         grid-column: 1 / 2;
     }
+
     .calendar .date {
         align-self: flex-start;
     }
