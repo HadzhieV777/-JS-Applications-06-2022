@@ -5,10 +5,10 @@ An SPA (Single-page application) is a web app implementation that loads only a s
 This therefore allows users to use websites without loading whole new pages from the server, which can result in performance gains and a more dynamic experience, with some tradeoff disadvantages such as SEO, more effort required to maintain state, implement navigation, and do meaningful performance monitoring.
 
 
-* Useful Links
+## Useful Links
 
 SPA with a location hash approach.
-- https://betterprogramming.pub/js-vanilla-script-spa-1b29b43ea475
+*  https://betterprogramming.pub/js-vanilla-script-spa-1b29b43ea475
 
 JS Routing
-- https://medium.com/@fro_g/routing-in-javascript-d552ff4d2921
+*  https://medium.com/@fro_g/routing-in-javascript-d552ff4d2921
