@@ -6,8 +6,9 @@ This therefore allows users to use websites without loading whole new pages from
 
 
 * Useful Links
-<!-- SPA with a location hash approach. -->
+
+SPA with a location hash approach.
 - https://betterprogramming.pub/js-vanilla-script-spa-1b29b43ea475
 
-<!-- JS Routing -->
+JS Routing
 - https://medium.com/@fro_g/routing-in-javascript-d552ff4d2921
