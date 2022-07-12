@@ -16,7 +16,7 @@
       src="https://kit.fontawesome.com/3cd69e2433.js"
       crossorigin="anonymous"
     ></script>
-  <script src="/src/home.js"></script>
+  <script src="/src/app.js" type="module"></script>
     <title>SoftUni Forum</title>
   </head>
 
@@ -31,12 +31,13 @@
       <nav>
         <ul>
           <li>
-            <a href="#">Home</a>
+            <a id="homeBtn" href="/src/home.js">Home</a>
           </li>
         </ul>
       </nav>
     </header>
 
+   <main>
     <section id="homeView">
       <!-- homepage -->
       <div class="container">
@@ -67,8 +68,8 @@
                 ></textarea>
               </div>
               <div class="new-topic-buttons">
-                <button class="cancel">Cancel</button>
-                <button class="public">Post</button>
+                <button type="button" name="cancel" class="cancel">Cancel</button>
+                <button name="submit" class="public">Post</button>
               </div>
             </form>
           </div>
@@ -206,6 +207,8 @@
         </div>
       </div>
     </section>
+
+   </main>
 
     <footer>
       <p>This site is designed to be used for training purposes at SoftUni.</p>
