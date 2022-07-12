@@ -2,7 +2,13 @@ export function createPostPreview(post) {
   const div = createNewElement("div", "topic-name-wrapper");
   const topicName = createNewElement("div", "topic-name");
   //   Title section
-  const a = createNewElement("a", "normal", "", "/src/details.js", `${post._id}`);
+  const a = createNewElement(
+    "a",
+    "normal",
+    "",
+    "/src/details.js",
+    `${post._id}`
+  );
   a.appendChild(createNewElement("h2", "", `${post.title}`));
   topicName.appendChild(a);
 
@@ -11,7 +17,7 @@ export function createPostPreview(post) {
   const containerDiv = createNewElement("div");
 
   const p = createNewElement("p");
-  p.innerHTML = `Date: <time>${post.dateAdded}</time>`;
+  p.innerHTML = `Date: <time>${post.dateCreated}</time>`;
   containerDiv.appendChild(p);
 
   const userDiv = createNewElement("div", "nick-name");
@@ -25,11 +31,7 @@ export function createPostPreview(post) {
   return div;
 }
 
-export function createPostDetails(post) {
-    const element = createNewElement
-}
-
-function createNewElement(type, className, data, href, id) {
+export function createNewElement(type, className, data, href, id) {
   const element = document.createElement(type);
 
   if (className) {
@@ -44,8 +46,8 @@ function createNewElement(type, className, data, href, id) {
     element.href = href;
   }
 
-  if (id){
-    element.id = id
+  if (id) {
+    element.id = id;
   }
 
   return element;
