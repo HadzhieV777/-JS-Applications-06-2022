@@ -12,10 +12,19 @@ export function showDetails(ev) {
 
   if (target.tagName == "A") {
     ev.preventDefault();
-    showPost();
+
+    const postId = target.id
+    showPost(postId);
   }
 }
 
 function showPost(postId) {
+  document.querySelector("main").replaceChildren('Loading...');
+
+  const response = await fetch('http://localhost:3030/jsonstore/collections/myboard/posts/' + postId)
+  const post = await response.json();
+
+
   document.querySelector("main").replaceChildren(section);
+  console.log(postId)
 }
