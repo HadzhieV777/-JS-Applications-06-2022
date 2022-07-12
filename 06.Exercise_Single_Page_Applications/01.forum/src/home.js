@@ -6,8 +6,7 @@ section.querySelector("div.topic-title").addEventListener("click", showDetails);
 const form = section.querySelector("form");
 form.addEventListener("submit", onSubmit);
 section.querySelector('[name="cancel"]').addEventListener("click", clearForm);
-const container = section.querySelector('.topic-container')
-
+const container = section.querySelector(".topic-container");
 
 section.remove();
 
@@ -24,7 +23,7 @@ export async function showHome(ev) {
 
   // Spread required because map() returns an Array, but
   // replaceChildren() expect to recieve series of individual elements
-  container.replaceChildren(...Object.values(posts).map(createPostPreview))
+  container.replaceChildren(...Object.values(posts).map(createPostPreview));
 
   document.querySelector("main").replaceChildren(section);
 }
@@ -34,9 +33,9 @@ async function onSubmit(event) {
 
   const formData = new FormData(event.target);
 
-  const title = formData.get("topicName");
-  const username = formData.get("username");
-  const content = formData.get("postText");
+  const title = formData.get("topicName").trim();
+  const username = formData.get("username").trim();
+  const content = formData.get("postText").trim();
 
   try {
     if (title == "" || username == "" || content == "") {
