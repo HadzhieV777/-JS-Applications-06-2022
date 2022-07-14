@@ -1,13 +1,15 @@
 const host = "http://localhost:3030";
 
-export async function request(url, data) {
+async function request(method, url, data) {
   const options = {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    method,
+    headers: {},
   };
+
+  if (data !== undefined) {
+    options.headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(data);
+  }
 
   // Add Authorization token to the request if needed
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -23,12 +25,23 @@ export async function request(url, data) {
       throw new Error(error.message);
     }
 
-    const result = await res.json();
-    return result;
+    if (res.status == 204) {
+      return res;
+    } else {
+      return await res.json();
+    }
   } catch (err) {
     alert(err.message);
 
     // Throw the error otherwise another modules will continue to work despite the error
     throw err;
   }
+}
+
+export async function get(url) {
+  return request("get", url);
+}
+
+export async function post(url, data) {
+  return request("post", url, data);
 }
