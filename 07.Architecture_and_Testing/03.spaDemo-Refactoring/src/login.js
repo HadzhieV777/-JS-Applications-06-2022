@@ -1,5 +1,6 @@
 import { showHome } from './home.js';
 import { checkUserNav } from './util.js';
+import { request } from './api.js';
 
 
 const section = document.getElementById('loginView');
@@ -17,22 +18,8 @@ async function onSubmit(event) {
 
     const email = formData.get('email').trim();
     const password = formData.get('password').trim();
-
-    try {
-        const res = await fetch('http://localhost:3030/users/login', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        if (res.ok == false) {
-            const error = await res.json();
-            throw Error(error.message);
-        }
-
-        const data = await res.json();
+ 
+    const data = await request("/users/login", {email, password});
 
         const userData = {
             email: data.email,
@@ -43,8 +30,6 @@ async function onSubmit(event) {
         sessionStorage.setItem('userData', JSON.stringify(userData));
         checkUserNav();
         showHome();
-
-    } catch (err) {
-        alert(err.message);
-    }
+   
 }
+
