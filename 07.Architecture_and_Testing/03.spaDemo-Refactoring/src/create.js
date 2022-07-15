@@ -1,20 +1,18 @@
-import { showCatalog } from "./catalog.js";
-import { request } from "./api.js";
+import { post } from "./api.js";
+import { createSubmitHandler } from "./util.js";
 
 const section = document.getElementById("createView");
 const form = section.querySelector("form");
-form.addEventListener("submit", onSubmit);
+createSubmitHandler(form, onSubmit);
 section.remove();
+let ctx = null;
 
-export function showCreate() {
-  document.querySelector("main").replaceChildren(section);
+export function showCreate(inCtx) {
+  ctx = inCtx;
+  ctx.render(section);
 }
 
-async function onSubmit(event) {
-  event.preventDefault();
-  const formData = new FormData(form);
-
-  const title = formData.get("title").trim();
-  await request("/data/movies", { title });
-  showCatalog();
+async function onSubmit({ title }) {
+  await post("/data/movies", { title });
+  ctx.goTo("catalogBtn");
 }
