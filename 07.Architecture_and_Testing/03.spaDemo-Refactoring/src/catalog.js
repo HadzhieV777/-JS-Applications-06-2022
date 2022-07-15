@@ -1,25 +1,26 @@
-const section = document.getElementById('catalogView');
-const list = section.querySelector('ul');
+import { get } from "./api.js";
+
+const section = document.getElementById("catalogView");
+const list = section.querySelector("ul");
 section.remove();
 
-export async function showCatalog() {
-    document.querySelector('main').replaceChildren(section);
+export async function showCatalog(ctx) {
+  ctx.render(section);
 
-    list.replaceChildren('Loading...');
+  list.replaceChildren("Loading...");
 
-    const res = await fetch('http://localhost:3030/data/movies');
-    const movies = await res.json();
+  const movies = await get("/data/movies");
 
-    const fragment = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
 
-    movies.map(createMovieItem).forEach(c => fragment.appendChild(c));
+  movies.map(createMovieItem).forEach((c) => fragment.appendChild(c));
 
-    list.replaceChildren(fragment);
+  list.replaceChildren(fragment);
 }
 
 function createMovieItem(movie) {
-    const li = document.createElement('li');
-    li.textContent = movie.title;
+  const li = document.createElement("li");
+  li.textContent = movie.title;
 
-    return li;
+  return li;
 }
