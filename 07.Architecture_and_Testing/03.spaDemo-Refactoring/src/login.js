@@ -1,35 +1,27 @@
-import { showHome } from './home.js';
-import { checkUserNav } from './util.js';
-import { request } from './api.js';
+import { post } from "./api.js";
+import { createSubmitHandler } from "./util.js";
 
-
-const section = document.getElementById('loginView');
-const form = section.querySelector('form');
-form.addEventListener('submit', onSubmit);
+const section = document.getElementById("loginView");
+const form = section.querySelector("form");
+createSubmitHandler(form, onSubmit);
 section.remove();
+let ctx = null;
 
-export function showLogin() {
-    document.querySelector('main').replaceChildren(section);
+export function showLogin(inCtx) {
+  ctx = inCtx;
+  ctx.render(section);
 }
 
-async function onSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(form);
+async function onSubmit({ email, password }) {
+  const data = await post("/users/login", { email, password });
 
-    const email = formData.get('email').trim();
-    const password = formData.get('password').trim();
- 
-    const data = await request("/users/login", {email, password});
+  const userData = {
+    email: data.email,
+    accessToken: data.accessToken,
+    id: data._id,
+  };
 
-        const userData = {
-            email: data.email,
-            accessToken: data.accessToken,
-            id: data._id
-        };
-
-        sessionStorage.setItem('userData', JSON.stringify(userData));
-        checkUserNav();
-        showHome();
-   
+  sessionStorage.setItem("userData", JSON.stringify(userData));
+  ctx.checkUserNav;
+  ctx.goTo("homeBtn");
 }
-
