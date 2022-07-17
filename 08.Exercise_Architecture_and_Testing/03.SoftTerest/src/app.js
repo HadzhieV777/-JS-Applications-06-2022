@@ -4,11 +4,9 @@ import { showDetails } from "./views/details.js";
 import { showHome } from "./views/homepage.js";
 import { showLogin } from "./views/login.js";
 import { showRegister } from "./views/register.js";
+import { initialize } from "./router.js";
 
-const main = document.querySelector("main");
 document.getElementById("views").remove();
-
-document.querySelector("nav").addEventListener("click", onNavigate);
 
 const urls = {
   "/": showHome,
@@ -19,27 +17,7 @@ const urls = {
   "/create": showCreate,
 };
 
-const context = {
-  showSection,
-};
+const router = initialize(urls);
 
-function showSection(section) {
-  main.replaceChildren(section);
-}
-
-function onNavigate(event) {
-  let target = event.target;
-  if (target.tagName == "IMG") {
-    target = target.parentElement;
-  }
-
-  if (target.tagName == "A") {
-    event.preventDefault();
-    const url = new URL(target.href);
-    const handler = urls[url.pathname];
-    
-    if (typeof handler == "function") {
-      handler(context);
-    }
-  }
-}
+// Start app in home view
+router.goToPage("/");
