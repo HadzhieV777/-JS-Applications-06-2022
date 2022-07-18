@@ -1,10 +1,12 @@
 export function initialize(urls) {
   const main = document.querySelector("main");
-  document.querySelector("nav").addEventListener("click", onNavigate);
+  const nav = document.querySelector("nav")
+  nav.addEventListener("click", onNavigate);
 
   const context = {
     showSection,
     goToPage,
+    updateNav
   };
 
   return context;
@@ -27,11 +29,22 @@ export function initialize(urls) {
   }
 
   // Func for navigating between pages without onNavigate function
-  function goToPage(name) {
+  function goToPage(name, ...params) {
     const handler = urls[name];
 
     if (typeof handler == "function") {
-      handler(context);
+      handler(context, ...params);
+    }
+  }
+
+  function updateNav() {
+    const user = localStorage.getItem('user')
+    if (user) {
+      nav.querySelectorAll('.user').forEach(e => e.style.display = 'block')
+      nav.querySelectorAll('.guest').forEach(e => e.style.display = 'none')
+    } else {
+      nav.querySelectorAll('.user').forEach(e => e.style.display = 'none')
+      nav.querySelectorAll('.guest').forEach(e => e.style.display = 'block')
     }
   }
 }
