@@ -1,10 +1,10 @@
 import { getUserData, setUserData, clearUserData } from "../utils.js";
 
-const host = "http://localhost:3030";
+export const host = "http://localhost:3030";
 
 async function request(url, options) {
   try {
-    const response = await fetch(host + url, options);
+    const response = await fetch(url, options);
 
     if (response.ok != true) {
       if (response.status == 403) {
@@ -52,7 +52,7 @@ export async function post(url, data) {
   return await request(url, getOptions('post', data))
 }
 
-export async function put(url) {
+export async function put(url, data) {
   return await request(url, getOptions('put', data))
 }
 
@@ -83,9 +83,9 @@ export async function register(email, password) {
 export async function logout() {
   const result = await get(host + "/users/logout");
 
-  sessionStorage.remove("email");
-  sessionStorage.remove("authToken");
-  sessionStorage.remove("userId");
+  sessionStorage.removeItem("email");
+  sessionStorage.removeItem("authToken");
+  sessionStorage.removeItem("userId");
 
   return result;
 }
