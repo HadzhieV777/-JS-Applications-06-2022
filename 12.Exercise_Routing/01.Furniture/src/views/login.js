@@ -4,15 +4,14 @@ import { html } from "../lib.js";
 const loginTemplate = (onSubmit, errorMsg) => html` <div class="row space-top">
     <div class="col-md-12">
       <h1>Login User</h1>
-      <p>Please fill all fields.</p>
+      <p> ${errorMsg
+          ? html`<div class="form-group error">${errorMsg}</div>`
+          : null}</p>
     </div>
   </div>
   <form @submit=${onSubmit}>
     <div class="row space-top">
       <div class="col-md-4">
-        ${errorMsg
-          ? html`<div class="form-group error">${errorMsg}</div>`
-          : null}
         <div class="form-group">
           <label class="form-control-label" for="email">Email</label>
           <input
