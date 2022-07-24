@@ -41,5 +41,3 @@ export async function deleteItem(id) {
   return api.del(api.host + endpoints.delete + id)
 }
 
-
-// 45: 45
