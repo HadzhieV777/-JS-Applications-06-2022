@@ -103,11 +103,13 @@ export function createPage(ctx) {
     const formData = [...new FormData(event.target)];
     // convert the data to dict where {field name: field value}
     const data = formData.reduce(
-      (a, [k, v]) => Object.assign(a, { [k]: v }),
+      (a, [k, v]) => Object.assign(a, { [k]: v.trim() }),
       {}
     );
 
-    const missing = formData.filter(([k, v]) => k != "material" && v == "");
+    const missing = formData.filter(
+      ([k, v]) => k != "material" && v.trim() == ""
+    );
 
     try {
       if (missing.length > 0) {
@@ -126,6 +128,7 @@ export function createPage(ctx) {
       data.price = Number(data.price);
 
       const result = await createItem(data);
+      event.target.reset();
       ctx.page.redirect("/details/" + result._id);
     } catch (err) {
       const message = err.message || err.error.message;
