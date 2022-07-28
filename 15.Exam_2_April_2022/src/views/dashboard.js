@@ -1,56 +1,27 @@
+import { getAllPets } from "../api/data.js";
 import { html } from "../lib.js";
 
-const dashboardTemplate = () => html` <section id="dashboard">
+const dashboardTemplate = (pets) => html` <section id="dashboard">
   <h2 class="dashboard-title">Services for every animal</h2>
   <div class="animals-dashboard">
-    <div class="animals-board">
-      <article class="service-img">
-        <img class="animal-image-cover" src="./images/cat2.jpg" />
-      </article>
-      <h2 class="name">Athena</h2>
-      <h3 class="breed">American Curl</h3>
-      <div class="action">
-        <a class="btn" href="#">Details</a>
-      </div>
-    </div>
-
-    <div class="animals-board">
-      <article class="service-img">
-        <img class="animal-image-cover" src="./images/dog2.jpg" />
-      </article>
-      <h2 class="name">Apollo</h2>
-      <h3 class="breed">Pug</h3>
-      <div class="action">
-        <a class="btn" href="#">Details</a>
-      </div>
-    </div>
-
-    <div class="animals-board">
-      <img class="animal-image-cover" src="./images/guinea-pig.jpg" />
-      <h2 class="name">Chibi</h2>
-      <h3 class="breed">Teddy guinea pig</h3>
-      <div class="action">
-        <a class="btn" href="#">Details</a>
-      </div>
-    </div>
-
-    <div class="animals-board">
-      <article class="service-img">
-        <img class="animal-image-cover" src="./images/Shiba-Inu.png" />
-      </article>
-      <h2 class="name">Max</h2>
-      <h3 class="breed">Shiba Inu</h3>
-      <div class="action">
-        <a class="btn" href="#">Details</a>
-      </div>
-    </div>
-    <!--If there is no pets in dashboard-->
-    <div>
-      <p class="no-pets">No pets in dashboard</p>
-    </div>
+    ${pets.length == 0
+      ? html` <div>
+          <p class="no-pets">No pets in dashboard</p>
+        </div>`
+      : pets.map(p => html` <div class="animals-board">
+          <article class="service-img">
+            <img class="animal-image-cover" src="${p.image}" />
+          </article>
+          <h2 class="name">${p.name}</h2>
+          <h3 class="breed">${p.breed}</h3>
+          <div class="action">
+            <a class="btn" href="/details/${p._id}">Details</a>
+          </div>
+        </div>`)}
   </div>
 </section>`;
 
-export function dashboardView(ctx) {
-  ctx.render(dashboardTemplate());
+export async function dashboardView(ctx) {
+  const pets = await getAllPets();
+  ctx.render(dashboardTemplate(pets));
 }
