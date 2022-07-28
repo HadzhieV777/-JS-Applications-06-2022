@@ -1,11 +1,16 @@
 export function getUserData() {
-  return JSON.parse(sessionStorage.getItem("userData"));
+  const user = sessionStorage.getItem('user');
+  if(user) {
+      return JSON.parse(user);
+  } else {
+      return undefined;
+  }
 }
 
-export function setUserData(data) {
-  sessionStorage.setItem("userData", JSON.stringify(data));
+export function setUserData(user) {
+  sessionStorage.setItem('user', JSON.stringify(user));
 }
 
 export function clearUserData() {
-  sessionStorage.removeItem("userData");
+  sessionStorage.removeItem('user');
 }
