@@ -25,24 +25,25 @@ async function request(url, options) {
   }
 }
 
-function getOptions(method = "get", body) {
+function getOptions(method = 'get', body) {
   const options = {
-    method,
-    headers: {},
-  };
-
-  if (body) {
-    options.headers["Content-type"] = "application/json";
-    options.body = JSON.stringify(body);
+      method,
+      headers: {}
   }
 
-  const userData = getUserData();
-  if (userData != null) {
-    options.headers["X-Authorization"] = userData.token;
+  const user = getUserData();
+  if (user) {
+      options.headers['x-authorization'] = user.accessToken;
+  }
+
+  if (body) {
+      options.headers['Content-Type'] = 'application/json';
+      options.body = JSON.stringify(body);
   }
 
   return options;
 }
+
 
 export async function get(url) {
   return request(url, getOptions());
@@ -61,28 +62,28 @@ export async function del(url) {
 }
 
 export async function login(email, password) {
-  const result = await post(host + "/users/login", { email, password });
+  const result = await post(host + "/users/login", {
+    email,
+    password,
+  });
+  setUserData(result);
 
-  const userData = {
-    email: result.email,
-    id: result._id,
-    token: result.accessToken,
-  };
-  setUserData(userData);
+  return result;
 }
 
 export async function register(email, password) {
-  const result = await post(host + "/users/register", { email, password });
+  const result = await post(host + "/users/register", {
+    email,
+    password,
+  });
+  setUserData(result);
 
-  const userData = {
-    email: result.email,
-    id: result._id,
-    token: result.accessToken,
-  };
-  setUserData(userData);
+  return result;
 }
 
-export async function logout() {
-  await get(host + "/users/logout");
+export function logout() {
+  const result = get(host + "/users/logout");
   clearUserData();
+
+  return result;
 }
