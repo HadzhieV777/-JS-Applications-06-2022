@@ -1,7 +1,7 @@
 import { html } from "../lib.js";
-import {login} from '../api/api.js'
+import { login } from "../api/api.js";
 
-const loginTemplate = (onSubmit) => html` <section id="loginPage">
+const loginTamplate = (onSubmit) => html`<section id="loginPage">
   <form class="loginForm" @submit=${onSubmit}>
     <img src="./images/logo.png" alt="logo" />
     <h2>Login</h2>
@@ -31,28 +31,28 @@ const loginTemplate = (onSubmit) => html` <section id="loginPage">
     <button class="btn" type="submit">Login</button>
 
     <p class="field">
-      <span>If you don't have profile click <a href="#">here</a></span>
+      <span>If you don't have profile click <a href="/register">here</a></span>
     </p>
   </form>
 </section>`;
 
-export function loginView(ctx) {
-  ctx.render(loginTemplate(onSubmit));
+export async function loginView(ctx) {
+  ctx.render(loginTamplate(onSubmit));
 
   async function onSubmit(event) {
     event.preventDefault();
+
     const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-    const email = formData.get("email").trim();
-    const password = formData.get("password").trim();
-
-    try {
-      await login(email, password);
-      ctx.updateUserNav();
-      event.target.reset();
-      ctx.page.redirect("/");
-    } catch (error) {
-      update(error.message);
+    if (!password || !email) {
+      return alert("All fields are required!");
     }
+
+    await login(email, password);
+    event.target.reset();
+    ctx.setUserNav();
+    ctx.page.redirect("/");
   }
 }
