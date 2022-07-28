@@ -1,7 +1,8 @@
 import { html } from "../lib.js";
+import { register } from "../api/api.js";
 
-const registerTemplate = () => html` <section id="registerPage">
-  <form class="registerForm">
+const registerTemplate = (onSubmit) => html`<section id="registerPage">
+  <form class="registerForm" @submit=${onSubmit}>
     <img src="./images/logo.png" alt="logo" />
     <h2>Register</h2>
     <div class="on-dark">
@@ -46,5 +47,27 @@ const registerTemplate = () => html` <section id="registerPage">
 </section>`;
 
 export function registerView(ctx) {
-  ctx.render(registerTemplate());
+  ctx.render(registerTemplate(onSubmit));
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const repass = formData.get("repeatPassword");
+
+    if (!password || !email) {
+      return alert("All fields are required!");
+    }
+
+    if (password != repass) {
+      return alert("Passwords don't match!");
+    }
+
+    await register(email, password);
+    event.target.reset();
+    ctx.setUserNav();
+    ctx.page.redirect("/");
+  }
 }
