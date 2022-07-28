@@ -16,7 +16,7 @@ document.getElementById("logoutBtn").addEventListener("click", onLogout);
 const routes = {
   home: "/",
   login: "/login",
-  edit: "/edit",
+  edit: "/edit/:id",
   dashboard: "/dashboard",
   details: "/details/:id",
   register: "/register",
@@ -38,6 +38,7 @@ page.start();
 function decorateContext(ctx, next) {
   ctx.render = (content) => render(content, root);
   ctx.setUserNav = setUserNav;
+  ctx.user = getUserData();
 
   next();
 }
