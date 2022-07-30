@@ -1,8 +1,10 @@
+import { register } from "../api/users.js";
 import { html } from "../lib.js";
+import { notify } from "../notify.js";
 
-const registerTemplate = () => html`
+const registerTemplate = (onSubmit) => html`
   <section id="register">
-    <form id="register-form">
+    <form id="register-form" @submit=${onSubmit}>
       <div class="container">
         <h1>Register</h1>
         <label for="username">Username</label>
@@ -44,5 +46,28 @@ const registerTemplate = () => html`
 `;
 
 export function registerView(ctx) {
-  ctx.render(registerTemplate());
+  ctx.render(registerTemplate(onSubmit));
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const username = formData.get("username").trim();
+    const email = formData.get("email").trim();
+    const password = formData.get("password").trim();
+    const repass = formData.get("repeatPass").trim();
+    const gender = formData.get("gender");
+
+    if (username == "" || email == "" || password == "") {
+      return notify("All fields are required!");
+    }
+
+    if (password != repass) {
+      return notify("Passwords don't match!");
+    }
+
+    await register(username, email, password, gender);
+    ctx.updateNav();
+    ctx.page.redirect("/memes");
+  }
 }
