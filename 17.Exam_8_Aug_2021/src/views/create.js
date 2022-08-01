@@ -1,7 +1,11 @@
 import { html } from "../lib.js";
+import { createBook } from "../api/books.js";
 
-const createTemplate = () => html` <section id="create-page" class="create">
-  <form id="create-form" action="" method="">
+const createTemplate = (onSubmit) => html` <section
+  id="create-page"
+  class="create"
+>
+  <form id="create-form" action="" method="" @submit=${onSubmit}>
     <fieldset>
       <legend>Add new Book</legend>
       <p class="field">
@@ -44,5 +48,26 @@ const createTemplate = () => html` <section id="create-page" class="create">
 </section>`;
 
 export function createView(ctx) {
-  ctx.render(createTemplate());
+  ctx.render(createTemplate(onSubmit));
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    const book = {
+      title: formData.get("title").trim(),
+      description: formData.get("description").trim(),
+      imageUrl: formData.get("imageUrl").trim(),
+      type: formData.get("type"),
+    };
+
+    if (book.title == "" || book.description == "" || book.imageUrl == "") {
+      return alert("All fields are required!");
+    }
+
+    await createBook(book);
+    event.target.reset();
+    ctx.page.redirect(ctx.routes.home);
+  }
 }
