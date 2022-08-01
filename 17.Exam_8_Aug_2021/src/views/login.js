@@ -1,7 +1,11 @@
+import { login } from "../api/users.js";
 import { html } from "../lib.js";
 
-const loginTemplate = () => html` <section id="login-page" class="login">
-  <form id="login-form" action="" method="">
+const loginTemplate = (onSubmit) => html` <section
+  id="login-page"
+  class="login"
+>
+  <form id="login-form" action="" method="" @submit=${onSubmit}>
     <fieldset>
       <legend>Login Form</legend>
       <p class="field">
@@ -27,5 +31,21 @@ const loginTemplate = () => html` <section id="login-page" class="login">
 </section>`;
 
 export function loginView(ctx) {
-  ctx.render(loginTemplate());
+  ctx.render(loginTemplate(onSubmit));
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const email = formData.get("email").trim();
+    const password = formData.get("password").trim();
+
+    if (email == "" || password == "") {
+      return alert("All fields are required!");
+    }
+
+    await login(email, password);
+    ctx.updateUserNav();
+    ctx.page.redirect(ctx.routes.home);
+  }
 }
