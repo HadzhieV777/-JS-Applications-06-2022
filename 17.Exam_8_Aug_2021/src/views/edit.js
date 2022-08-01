@@ -1,26 +1,27 @@
 import { html } from "../lib.js";
+import { updateBook, getBookById } from "../api/books.js";
 
-const editTemplate = () => html` <section id="edit-page" class="edit">
-  <form id="edit-form" action="#" method="">
+const editTemplate = (book, onSubmit) => html` <section
+  id="edit-page"
+  class="edit"
+>
+  <form id="edit-form" action="#" method="" @submit=${onSubmit}>
     <fieldset>
       <legend>Edit my Book</legend>
       <p class="field">
         <label for="title">Title</label>
         <span class="input">
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value="A Court of Thorns and Roses"
-          />
+          <input type="text" name="title" id="title" .value="${book.title}" />
         </span>
       </p>
       <p class="field">
         <label for="description">Description</label>
         <span class="input">
-          <textarea name="description" id="description">
-Feyre's survival rests upon her ability to hunt and kill – the forest where she lives is a cold, bleak place in the long winter months. So when she spots a deer in the forest being pursued by a wolf, she cannot resist fighting it for the flesh. But to do so, she must kill the predator and killing something so precious comes at a price ...</textarea
-          >
+          <textarea
+            name="description"
+            id="description"
+            .value="${book.description}"
+          ></textarea>
         </span>
       </p>
       <p class="field">
@@ -30,14 +31,14 @@ Feyre's survival rests upon her ability to hunt and kill – the forest where sh
             type="text"
             name="imageUrl"
             id="image"
-            value="/images/book1.png"
+            .value="${book.imageUrl}"
           />
         </span>
       </p>
       <p class="field">
         <label for="type">Type</label>
         <span class="input">
-          <select id="type" name="type" value="Fiction">
+          <select id="type" name="type" .value="${book.type}">
             <option value="Fiction" selected>Fiction</option>
             <option value="Romance">Romance</option>
             <option value="Mistery">Mistery</option>
@@ -51,6 +52,29 @@ Feyre's survival rests upon her ability to hunt and kill – the forest where sh
   </form>
 </section>`;
 
-export function editView(ctx) {
-  ctx.render(editTemplate());
+export async function editView(ctx) {
+  const book = await getBookById(ctx.params.id);
+
+  ctx.render(editTemplate(book, onSubmit));
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    const book = {
+      title: formData.get("title").trim(),
+      description: formData.get("description").trim(),
+      imageUrl: formData.get("imageUrl").trim(),
+      type: formData.get("type"),
+    };
+
+    if (book.title == "" || book.description == "" || book.imageUrl == "") {
+      return alert("All fields are required!");
+    }
+
+    await updateBook(ctx.params.id, book);
+    event.target.reset();
+    ctx.page.redirect(ctx.routes.home);
+  }
 }
