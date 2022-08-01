@@ -1,10 +1,11 @@
+import { register } from "../api/users.js";
 import { html } from "../lib.js";
 
-const registerTemplate = () => html` <section
+const registerTemplate = (onSubmit) => html` <section
   id="register-page"
   class="register"
 >
-  <form id="register-form" action="" method="">
+  <form id="register-form" action="" method="" @submit=${onSubmit}>
     <fieldset>
       <legend>Register Form</legend>
       <p class="field">
@@ -41,5 +42,26 @@ const registerTemplate = () => html` <section
 </section>`;
 
 export function registerView(ctx) {
-  ctx.render(registerTemplate());
+  ctx.render(registerTemplate(onSubmit));
+
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const email = formData.get("email").trim();
+    const password = formData.get("password").trim();
+    const repass = formData.get("confirm-pass").trim();
+
+    if (email == "" || password == "") {
+      return alert("All fields are required!");
+    }
+
+    if (password != repass) {
+      return alert("Passwords don't match!");
+    }
+
+    await register(email, password);
+    ctx.updateUserNav()
+    ctx.page.redirect(ctx.routes.home);
+  }
 }
