@@ -11,10 +11,11 @@ Implement views
 [ ] Extend reading functionality in Data service
 [ ] Template and view control
 
-- Login and Register
+- Login, Register and Logout
 [ ] Create user service
 [ ] Template and view control
 [ ] Submitting form and error handling
+[ ] Logout from navbar
 
 - Navigation header
 [ ] Session middleware
