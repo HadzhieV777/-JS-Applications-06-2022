@@ -1,7 +1,12 @@
 import { html } from "../lib.js";
+import { createSubmitHandler } from "../util.js";
+import * as gamesService from "../api/games.js";
 
-const createTemplate = () => html` <section id="create-page" class="auth">
-  <form id="create">
+const createTemplate = (onSubmit) => html` <section
+  id="create-page"
+  class="auth"
+>
+  <form id="create" @submit=${onSubmit}>
     <div class="container">
       <h1>Create Game</h1>
       <label for="leg-title">Legendary title:</label>
@@ -45,5 +50,22 @@ const createTemplate = () => html` <section id="create-page" class="auth">
 </section>`;
 
 export function createPage(ctx) {
-  ctx.render(createTemplate());
+  ctx.render(createTemplate(createSubmitHandler(ctx, onSubmit)));
+}
+
+async function onSubmit(ctx, data, event) {
+  if (Object.values(data).some((f) => f == "")) {
+    return alert("All fields are required!");
+  }
+
+  await gamesService.create({
+    title: data.title,
+    category: data.category,
+    maxLevel: data.maxLevel,
+    imageUrl: data.imageUrl,
+    summary: data.summary,
+  });
+
+  event.target.reset();
+  ctx.page.redirect("/");
 }
