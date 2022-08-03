@@ -1,10 +1,14 @@
 import { html } from "../lib.js";
 import * as gamesService from "../api/games.js";
 import { commentsView } from "./comments.js";
+import { commentFormView } from "./commentForm.js";
 
-const detailsTemplate = (game, commentsSection, onDelete) => html`<section
-  id="game-details"
->
+const detailsTemplate = (
+  game,
+  commentsSection,
+  commentFormSection,
+  onDelete
+) => html`<section id="game-details">
   <h1>Game Details</h1>
   <div class="info-section">
     <div class="game-header">
@@ -30,7 +34,7 @@ const detailsTemplate = (game, commentsSection, onDelete) => html`<section
 
   <!-- Bonus -->
   <!-- Add Comment ( Only for logged-in users, which is not creators of the current game ) -->
- ${}
+  ${commentFormSection}
 </section>`;
 
 export async function detailsPage(ctx) {
@@ -43,7 +47,12 @@ export async function detailsPage(ctx) {
   if (ctx.user) {
     game.isOwner = ctx.user._id == game._ownerId;
   }
-  ctx.render(detailsTemplate(game, commentsSection, onDelete));
+
+  const commentFormSection = commentFormView(ctx, game.isOwner);
+
+  ctx.render(
+    detailsTemplate(game, commentsSection, commentFormSection, onDelete)
+  );
 
   async function onDelete() {
     const choice = confirm(`Are you sure you want to delete ${game.title}?`);
