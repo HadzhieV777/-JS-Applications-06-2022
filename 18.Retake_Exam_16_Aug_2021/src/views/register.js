@@ -1,10 +1,12 @@
 import { html } from "../lib.js";
+import { createSubmitHandler } from "../util.js";
+import * as userService from "../api/users.js";
 
-const registerTemplate = () => html` <section
+const registerTemplate = (onSubmit) => html` <section
   id="register-page"
   class="content auth"
 >
-  <form id="register">
+  <form id="register" @submit=${onSubmit}>
     <div class="container">
       <div class="brand-logo"></div>
       <h1>Register</h1>
@@ -33,5 +35,18 @@ const registerTemplate = () => html` <section
 </section>`;
 
 export function registerPage(ctx) {
-  ctx.render(registerTemplate());
+  ctx.render(registerTemplate(createSubmitHandler(ctx, onSubmit)));
+}
+
+async function onSubmit(ctx, data, event) {
+  if (data.email == "" || data.password == "") {
+    return alert("All fields are required!");
+  }
+
+  if (data.password != data["confirm-password"]) {
+    return alert("Passwords don't match!");
+  }
+  await userService.register(data.email, data.password);
+  event.target.reset();
+  ctx.page.redirect("/");
 }
