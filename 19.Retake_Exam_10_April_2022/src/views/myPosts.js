@@ -1,35 +1,27 @@
+import { getMyPosts } from "../api/posts.js";
 import { html } from "../lib.js";
 
-const myPostsTemplate = () => html`<section id="my-posts-page">
+const myPostsTemplate = (posts) => html`<section id="my-posts-page">
   <h1 class="title">My Posts</h1>
 
   <!-- Display a div with information about every post (if any)-->
   <div class="my-posts">
-    <div class="post">
-      <h2 class="post-title">Clothes</h2>
-      <img
-        class="post-image"
-        src="./images/clothes.jpeg"
-        alt="Material Image"
-      />
-      <div class="btn-wrapper">
-        <a href="#" class="details-btn btn">Details</a>
-      </div>
-    </div>
-
-    <div class="post">
-      <h2 class="post-title">Toys</h2>
-      <img class="post-image" src="./images/toys.jpeg" alt="Material Image" />
-      <div class="btn-wrapper">
-        <a href="#" class="details-btn btn">Details</a>
-      </div>
-    </div>
+    ${posts.length == 0
+      ? html` <h1 class="title no-posts-title">You have no posts yet!</h1>`
+      : posts.map(postCard)}
   </div>
-
-  <!-- Display an h1 if there are no posts -->
-  <h1 class="title no-posts-title">You have no posts yet!</h1>
 </section>`;
 
+const postCard = (post) => html` <div class="post">
+  <h2 class="post-title">${post.title}</h2>
+  <img class="post-image" src="${post.imageUrl}" alt="Material Image" />
+  <div class="btn-wrapper">
+    <a href="/details/${post._id}" class="details-btn btn">Details</a>
+  </div>
+</div>`;
+
 export async function myPostsPage(ctx) {
-  ctx.render(myPostsTemplate());
+  const userId = ctx.user.id;
+  const posts = await getMyPosts(userId);
+  ctx.render(myPostsTemplate(posts));
 }
