@@ -39,11 +39,11 @@ export async function registerPage(ctx) {
     const repass = formData.get("repeatPassword").trim();
 
     if (email == "" || password == "") {
-      return notify("All fields are required!");
+      return alert("All fields are required!");
     }
 
     if (password != repass) {
-      return notify("Passwords don't match!");
+      return alert("Passwords don't match!");
     }
 
     await register(email, password);
