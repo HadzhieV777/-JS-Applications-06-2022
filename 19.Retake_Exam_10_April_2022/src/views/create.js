@@ -1,7 +1,11 @@
+import { createPost } from "../api/posts.js";
 import { html } from "../lib.js";
 
-const createTemplate = () => html` <section id="create-page" class="auth">
-  <form id="create">
+const createTemplate = (onSubmit) => html` <section
+  id="create-page"
+  class="auth"
+>
+  <form id="create" @submit=${onSubmit}>
     <h1 class="title">Create Post</h1>
 
     <article class="input-group">
@@ -34,7 +38,26 @@ const createTemplate = () => html` <section id="create-page" class="auth">
 </section>`;
 
 export async function createPage(ctx) {
-  ctx.render(createTemplate());
-}
+  ctx.render(createTemplate(onSubmit));
 
-// TODO CREATEVIEW
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const singlePost = {
+      title: formData.get("title").trim(),
+      description: formData.get("description").trim(),
+      imageUrl: formData.get("imageUrl").trim(),
+      address: formData.get("address").trim(),
+      phone: formData.get("phone").trim(),
+    };
+
+    if (Object.values(singlePost).some((f) => f == "")) {
+      return alert("All fields are required!");
+    }
+
+    await createPost(singlePost);
+    event.target.reset();
+    ctx.page.redirect("/");
+  }
+}
