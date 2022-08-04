@@ -30,7 +30,7 @@ export async function loginPage(ctx) {
     const password = formData.get("password").trim();
 
     if (email == "" || password == "") {
-      return notify("All fields are required!");
+      return alert("All fields are required!");
     }
 
     await login(email, password);
