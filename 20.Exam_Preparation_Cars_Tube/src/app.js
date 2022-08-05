@@ -25,11 +25,11 @@ const endpoints = {
   logout: "/logout",
 
   // Listings
+  sort: "/by-year",
   create: "/create",
   edit: "/edit/:id",
   details: "/details/:id",
   myListings: "/my-listings",
-  sort: "/by-year",
 };
 
 // Middlewares
@@ -42,11 +42,11 @@ page(endpoints.dashboard, dashboardPage);
 page(endpoints.login, loginPage);
 page(endpoints.register, registerPage);
 page(endpoints.logout, onLogout);
+page(endpoints.sort, sortPage);
 page(endpoints.create, createPage);
 page(endpoints.edit, editPage);
 page(endpoints.details, detailsPage);
 page(endpoints.myListings, myListingsPage);
-page(endpoints.sort, sortPage);
 
 page.start();
 
@@ -54,5 +54,3 @@ function onLogout(ctx) {
   logout();
   ctx.page.redirect("/");
 }
-
-
