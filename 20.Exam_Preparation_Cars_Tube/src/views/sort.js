@@ -1,6 +1,7 @@
+import { sortByYear } from "../api/listings.js";
 import { html } from "../lib.js";
 
-const sortTemplate = () => html` <section id="search-cars">
+const sortTemplate = (onClick, listings) => html` <section id="search-cars">
   <h1>Filter by year</h1>
 
   <div class="container">
@@ -10,35 +11,46 @@ const sortTemplate = () => html` <section id="search-cars">
       name="search"
       placeholder="Enter desired production year"
     />
-    <button class="button-list">Search</button>
+    <button @click=${onClick} class="button-list">Search</button>
   </div>
 
   <h2>Results:</h2>
   <div class="listings">
     <!-- Display all records -->
-    <div class="listing">
-      <div class="preview">
-        <img src="/images/audia3.jpg" />
-      </div>
-      <h2>Audi A3</h2>
-      <div class="info">
-        <div class="data-info">
-          <h3>Year: 2018</h3>
-          <h3>Price: 25000 $</h3>
-        </div>
-        <div class="data-buttons">
-          <a href="#" class="button-carDetails">Details</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Display if there are no matches -->
-    <p class="no-cars">No results.</p>
+    ${listings.length == 0
+      ? html` <p class="no-cars">No results.</p>`
+      : listings.map(listingCard)}
   </div>
 </section>`;
 
-export async function sortPage(ctx) {
-  ctx.render(sortTemplate());
-}
+const listingCard = (listing) => html` <div class="listing">
+  <div class="preview">
+    <img src="${listing.imageUrl}" />
+  </div>
+  <h2>${listing.brand} ${listing.model}</h2>
+  <div class="info">
+    <div class="data-info">
+      <h3>Year: ${listing.year}</h3>
+      <h3>Price: ${listing.price} $</h3>
+    </div>
+    <div class="data-buttons">
+      <a href="/details/${listing._id}" class="button-carDetails">Details</a>
+    </div>
+  </div>
+</div>`;
 
-// TODO CREATE SORT BY
+export async function sortPage(ctx) {
+  ctx.render(sortTemplate(onClick, []));
+
+  async function onClick() {
+    const field = document.getElementById("search-input");
+
+    if (field.value == "") {
+      return alert("You can't submit an empty field!");
+    }
+
+    const listings = await sortByYear(field.value);
+    field.value = "";
+    ctx.render(sortTemplate(onClick, listings))
+  }
+}
