@@ -5,6 +5,7 @@ const routes = {
   myListings: (userId) =>
     `/data/cars?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`,
   getById: "/data/cars/",
+  sort: "/data/cars?where=year%3D",
   create: "/data/cars",
   update: "/data/cars/",
   delete: "/data/cars/",
@@ -32,4 +33,8 @@ export async function updateLisitng(id, listing) {
 
 export async function deleteLisitng(id) {
   return del(routes.delete + id);
+}
+
+export async function sortByYear(year) {
+  return get(routes.sort + year);
 }
